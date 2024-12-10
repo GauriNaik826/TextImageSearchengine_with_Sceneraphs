@@ -50,7 +50,7 @@ class Winoground_evaluation:
         - image_score is the accuracy of the model on matching image with the correct text
         - group_score is the accuracy of the model if both previous pairings are correct
         """
-        # auth_token = "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" # Replace with an auth token, which you can get from your huggingface account: Profile -> Settings -> Access Tokens -> New Token
+        
         # winoground = load_dataset("facebook/winoground", use_auth_token=auth_token, trust_remote_code=True)["test"]
         
         
@@ -513,8 +513,6 @@ class Winoground_generative_evaluation:
         else:
             inputs = self.processor(text=prompt, images=image, return_tensors="pt").to(self.device)
 
-        # use_auth_token = "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"
-        # tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_auth_token=use_auth_token)
         # prompt = "No"
         # inputs_language = tokenizer(prompt, return_tensors="pt")
         # print("inputs_language", inputs_language)
