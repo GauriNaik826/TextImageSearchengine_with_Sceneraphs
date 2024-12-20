@@ -30,4 +30,30 @@ As shown in the figure, when a text query is provided, it is processed in parall
 ### 3. Retrieval Using Approximate Nearest Neighbors
 The final step involves retrieving the most relevant images from the indexed database. The fused query embeddings are compared with the fused image embeddings stored in the Annoy index. The index leverages the Approximate Nearest Neighbors (ANN) algorithm to perform a similarity search, clustering the stored embeddings and identifying the closest matches to the query embedding in the shared vector space. This process efficiently retrieves the top-ranked images that are most relevant to the query in terms of both semantic content and relational context. By integrating scene graph-based reasoning and fusing the embeddings, our system achieves improved compositional understanding, enabling it to handle complex multi-part queries with higher accuracy and relevance.
 
+## Experimental Setup
+
+### Dataset
+
+#### Evaluation Datasets
+We use the following two datasets for the evaluation of compositional understanding, along with the COCO Caption dataset for evaluating the retrieval system:
+
+- **Winoground Dataset**  
+  The Winoground dataset [Thrush et al., 2022](#references) is an evaluation benchmark consisting of 400 pairs of two images and two captions. The two captions in each pair contain identical words but in a different order.
+
+- **SugarCrepe Dataset**  
+  The SugarCrepe dataset [Hsieh et al., 2024](#references) is a benchmark dataset that tests fine-grained compositional understanding. In this dataset, an object, attribute, or relation is either replaced, swapped, or added to the original text such that the caption no longer matches the scene.
+
+- **ECCV COCO Caption Dataset**  
+  We utilize 20 samples from the ECCV COCO Caption dataset [Chun et al., 2022](#references) for retrieval tasks. Each caption is associated with 4 to 10 images for evaluating retrieval performance.
+
+#### Fine-tuning Dataset
+We use the FACTUAL Scene Graph Dataset [Li et al., 2023](#references) for fine-tuning the Graph Neural Network. This dataset contains 40,369 instances with lemmatized predicates and relations.
+
+---
+
+## References
+1. Thrush, C., et al. *Winoground: Benchmarking Compositional Understanding in Vision and Language Models*. 2022.  
+2. Hsieh, T., et al. *SugarCrepe: Fine-Grained Compositional Understanding for Vision-Language Models*. 2024.  
+3. Chun, J., et al. *ECCV COCO Caption Dataset: Enhancing Retrieval Evaluation for Multimodal Systems*. 2022.  
+4. Li, W., et al. *FACTUAL Scene Graph Dataset: A Resource for Compositional Understanding*. 2023.
 
