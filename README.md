@@ -21,42 +21,13 @@ This section outlines the methodology used to improve the compositional understa
 As illustrated in the figure above, the proposed system integrates a Vision-Language Model (VLM) with scene graph embeddings. The methodology comprises three main steps, as described below.
 
 ### 1. Creating the Annoy Index with Image Embeddings
-The first step in the retrieval task involves building a structured storage system for image embeddings using the Annoy index.
+The first step in the retrieval task involves building a structured storage system for image embeddings using the Annoy index. First, the images from the dataset are passed through the CLIP image encoder, which generates embeddings representing the visual content of each image. Simultaneously, the corresponding scene graphs for these images—where nodes represent objects and edges depict the relationships between them—are processed through a fine-tuned Graph Neural Network (GNN). The GNN is fine-tuned on the FACTUAL scene graph dataset \cite{li-etal-2023-factual}. The GNN encodes the scene graphs into embeddings that capture the relational structures within the images. These scene graph embeddings are then fused with the CLIP image embeddings, resulting in enriched feature vectors that incorporate both spatial and relational understanding. These fused embeddings are stored in the Annoy index \footnote{https://github.com/spotify/annoy}, which organizes embeddings into a tree structure using random projections, facilitating efficient clustering and retrieval of similar embeddings. Once this indexed database of image embeddings is prepared, the system is ready to process textual queries.
 
-1. **Generating Image Embeddings**:
-    - Images from the dataset are passed through the CLIP image encoder, which generates embeddings representing the visual content of each image.
-
-2. **Scene Graph Processing**:
-    - Corresponding scene graphs for the images—where nodes represent objects and edges depict the relationships between them—are processed through a fine-tuned Graph Neural Network (GNN). 
-    - The GNN, fine-tuned on the FACTUAL scene graph dataset [Li et al., 2023], encodes the scene graphs into embeddings that capture the relational structures within the images.
-
-3. **Fusing Embeddings**:
-    - Scene graph embeddings are fused with CLIP image embeddings to create enriched feature vectors that incorporate both spatial and relational understanding.
-
-4. **Indexing with Annoy**:
-    - These fused embeddings are stored in the Annoy index, which organizes embeddings into a tree structure using random projections, facilitating efficient clustering and retrieval of similar embeddings.
 
 ### 2. Query Representation
-When a text query is provided, it is processed in parallel with its corresponding scene graph.
-
-1. **Text Embeddings**:
-    - The textual query is passed through the CLIP text encoder to generate feature embeddings that capture the semantic meaning of the query.
-
-2. **Scene Graph for the Query**:
-    - A scene graph is constructed for the query where objects (e.g., "person," "pants," "window") serve as nodes, and their relationships (e.g., "person-with-pants") define the edges. 
-    - This query scene graph is encoded using the same fine-tuned GNN used for the image scene graphs.
-
-3. **Fusing Query Embeddings**:
-    - Text embeddings from the CLIP text encoder are fused with the query scene graph embeddings, resulting in a unified query representation that incorporates both semantic and relational understanding to better interpret complex, multi-part queries.
+As shown in the figure, when a text query is provided, it is processed in parallel with its corresponding scene graph. The raw textual query is passed through the CLIP text encoder to generate its feature embedding that captures the semantic meaning of the query. In addition, a scene graph is constructed for the query, where objects (e.g., ``person'', ``pants'', ``window'') serve as nodes and their relationships (e.g., ``person-with-pants'') define the edges. This query scene graph is encoded using the same fine-tuned GNN used for the image scene graphs, producing embeddings that capture the relational structure of the query. The text embeddings from the CLIP text encoder are fused with the query scene graph embeddings, resulting in a unified query representation that incorporates both semantic and relational understanding to better interpret complex, multi-part queries.
 
 ### 3. Retrieval Using Approximate Nearest Neighbors
-The final step involves retrieving the most relevant images from the indexed database.
+The final step involves retrieving the most relevant images from the indexed database. The fused query embeddings are compared with the fused image embeddings stored in the Annoy index. The index leverages the Approximate Nearest Neighbors (ANN) algorithm to perform a similarity search, clustering the stored embeddings and identifying the closest matches to the query embedding in the shared vector space. This process efficiently retrieves the top-ranked images that are most relevant to the query in terms of both semantic content and relational context. By integrating scene graph-based reasoning and fusing the embeddings, our system achieves improved compositional understanding, enabling it to handle complex multi-part queries with higher accuracy and relevance.
 
-1. **Similarity Search**:
-    - The fused query embeddings are compared with the fused image embeddings stored in the Annoy index. 
-    - The Annoy index leverages the Approximate Nearest Neighbors (ANN) algorithm to perform a similarity search, clustering stored embeddings and identifying the closest matches to the query embedding in the shared vector space.
 
-2. **Top-Ranked Images**:
-    - This process efficiently retrieves the top-ranked images that are most relevant to the query in terms of both semantic content and relational context.
-
-By integrating scene graph-based reasoning and fusing the embeddings, our system achieves improved compositional understanding, enabling it to handle complex multi-part queries with higher accuracy and relevance.
