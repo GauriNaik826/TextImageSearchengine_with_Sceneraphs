@@ -49,6 +49,23 @@ We use the following two datasets for the evaluation of compositional understand
 #### Fine-tuning Dataset
 We use the FACTUAL Scene Graph Dataset [Li et al., 2023](#references) for fine-tuning the Graph Neural Network. This dataset contains 40,369 instances with lemmatized predicates and relations.
 
+## Results
+
+![image](https://github.com/user-attachments/assets/948c7d1c-b593-4544-8dde-7c8e2d725e9d)
+
+<p align="left">
+Performance comparison of ResNet (RN50, RN101) and CLIP (ViT-L-14, ViT-B-32) variants on the Winoground and SugarCrepe datasets across various metrics, highlighting compositional understanding in vision-language models.
+</p>
+
+---
+
+![image](https://github.com/user-attachments/assets/15aa8b0f-2231-4d26-8776-3099ec6ef05a)
+<p align="left">
+Comparison of Recall scores for ResNet (RN50, RN101) and CLIP (ViT-L-14, ViT-B-32) variants with and without Scenegraph embeddings fused via a Graph Neural Network (GNN) in a caption retrieval task. Results are evaluated across 20 samples for Recall@1, Recall@2, Recall@5, and Recall@10, considering 4-10 images per caption.
+</p>
+
+
+
 ---
 
 ## References
